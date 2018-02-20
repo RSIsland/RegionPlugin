@@ -12,10 +12,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.ecconia.rsisland.plugin.selection.F;
+import com.ecconia.rsisland.plugin.region.F;
 
 public class CommandHandler implements CommandExecutor, TabCompleter
 {
@@ -38,12 +37,6 @@ public class CommandHandler implements CommandExecutor, TabCompleter
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-		if(!(sender instanceof Player))
-		{
-			F.e(sender, "Only Players can create selections (currently)");
-			return true;
-		}
-		
 		if(args.length == 0)
 		{
 			F.n(sender, "Use tabcomplete to get a list of subcomands.");
@@ -57,7 +50,14 @@ public class CommandHandler implements CommandExecutor, TabCompleter
 			return true;
 		}
 		
-		subCommand.exec(sender, Arrays.copyOfRange(args, 1, args.length));
+		try
+		{
+			subCommand.exec(sender, Arrays.copyOfRange(args, 1, args.length));
+		}
+		catch (NotAPlayerException e)
+		{
+			F.e(sender, "Only Players can use this command.");
+		}
 		
 		return true;
 	}

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public abstract class Subcommand implements CommandCompleter
 {
@@ -26,4 +27,13 @@ public abstract class Subcommand implements CommandCompleter
 	}
 
 	public abstract void exec(CommandSender sender, String[] args);
+	
+	protected Player getPlayer(CommandSender sender)
+	{
+		if(!(sender instanceof Player))
+		{
+			throw new NotAPlayerException();
+		}
+		return (Player) sender;
+	}
 }
