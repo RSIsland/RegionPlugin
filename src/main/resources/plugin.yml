@@ -1,0 +1,9 @@
+main: ${groupId}.${artifactId}
+name: ${artifactId}
+version: ${version}
+
+author: Ecconia
+description: Manage regions and their options.
+
+commands:
+  reg:
