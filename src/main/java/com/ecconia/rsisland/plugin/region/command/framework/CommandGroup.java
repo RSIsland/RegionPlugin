@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 
-import com.ecconia.rsisland.plugin.selection.F;
+import com.ecconia.rsisland.plugin.region.F;
 
 public class CommandGroup extends Subcommand
 {
