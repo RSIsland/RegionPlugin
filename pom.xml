@@ -20,6 +20,13 @@
 			<version>1.12.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- Please download from github.com/RSIsland and compile with 'mvn install' -->
+		<dependency>
+		<dependency>
+			<groupId>com.ecconia.rsisland.framework.cofami</groupId>
+			<artifactId>Cofami</artifactId>
+			<version>1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>
@@ -37,6 +44,26 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<filters>
+								<filter>
+									<artifact>com.ecconia.rsisland.framework.*:*:*:*</artifact>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
