@@ -22,6 +22,11 @@
 		</dependency>
 		<!-- Please download from github.com/RSIsland and compile with 'mvn install' -->
 		<dependency>
+			<groupId>com.ecconia.rsisland.plugin.selection</groupId>
+			<artifactId>SelectionPlugin-API</artifactId>
+			<version>1</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.ecconia.rsisland.framework.cofami</groupId>
 			<artifactId>Cofami</artifactId>
