@@ -8,12 +8,22 @@ import com.ecconia.rsisland.framework.cofami.CommandHandler;
 import com.ecconia.rsisland.framework.cofami.Feedback;
 import com.ecconia.rsisland.framework.cofami.GroupSubcommand;
 import com.ecconia.rsisland.framework.commonelements.Area;
+import com.ecconia.rsisland.plugin.region.commands.CommandAppend;
+import com.ecconia.rsisland.plugin.region.commands.CommandCreate;
+import com.ecconia.rsisland.plugin.region.commands.CommandDelete;
+import com.ecconia.rsisland.plugin.region.commands.CommandRemove;
+import com.ecconia.rsisland.plugin.region.elements.Region;
+import com.ecconia.rsisland.plugin.region.exception.NoSelectionPluginException;
+import com.ecconia.rsisland.plugin.region.exception.RegionExistingException;
+import com.ecconia.rsisland.plugin.region.regionstorage.RegionStorage;
 import com.ecconia.rsisland.plugin.selection.api.SelectionAPI;
 
 public class RegionPlugin extends JavaPlugin
 {
 	public static final String prefix = ChatColor.WHITE + "[" + ChatColor.GOLD + "Region" + ChatColor.WHITE + "] ";
 	private SelectionAPI selectAPI;
+	
+	private RegionStorage storage;
 	
 	@Override
 	public void onEnable()
@@ -25,6 +35,8 @@ public class RegionPlugin extends JavaPlugin
 				selectAPI = (SelectionAPI) provider.getProvider();
 			}
 		}
+		
+		storage = new RegionStorage();
 		
 		initCommand();
 	}
@@ -50,6 +62,14 @@ public class RegionPlugin extends JavaPlugin
 
 	public IRegion createRegion(Area area, String name)
 	{
+		if(storage.hasRegion(name))
+		{
+			throw new RegionExistingException();
+		}
+		
+		Region region = new Region(name, area);
+		storage.add(region);
+		
 		return null;
 	}
 }
