@@ -60,7 +60,7 @@ public class RegionPlugin extends JavaPlugin
 		return selectAPI;
 	}
 
-	public IRegion createRegion(Area area, String name)
+	public void createRegion(Area area, String name)
 	{
 		if(storage.hasRegion(name))
 		{
@@ -69,7 +69,5 @@ public class RegionPlugin extends JavaPlugin
 		
 		Region region = new Region(name, area);
 		storage.add(region);
-		
-		return null;
 	}
 }
