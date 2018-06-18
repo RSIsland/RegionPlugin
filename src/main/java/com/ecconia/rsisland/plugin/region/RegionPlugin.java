@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.ecconia.rsisland.framework.cofami.CommandHandler;
 import com.ecconia.rsisland.framework.cofami.Feedback;
 import com.ecconia.rsisland.framework.cofami.GroupSubcommand;
+import com.ecconia.rsisland.framework.commonelements.Area;
 import com.ecconia.rsisland.plugin.selection.api.SelectionAPI;
 
 public class RegionPlugin extends JavaPlugin
@@ -36,6 +37,7 @@ public class RegionPlugin extends JavaPlugin
 			,new CommandAppend(this)
 			,new CommandRemove(this)
 		));
+	}
 
 	public SelectionAPI getSelectAPI() throws NoSelectionPluginException
 	{
@@ -44,5 +46,10 @@ public class RegionPlugin extends JavaPlugin
 			throw new NoSelectionPluginException();
 		}
 		return selectAPI;
+	}
+
+	public IRegion createRegion(Area area, String name)
+	{
+		return null;
 	}
 }
