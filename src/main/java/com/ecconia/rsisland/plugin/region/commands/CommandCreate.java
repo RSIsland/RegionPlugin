@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.ecconia.rsisland.framework.cofami.Subcommand;
 import com.ecconia.rsisland.plugin.region.RegionPlugin;
+import com.ecconia.rsisland.plugin.region.exception.DatabaseException;
 import com.ecconia.rsisland.plugin.region.exception.NoSelectionPluginException;
 import com.ecconia.rsisland.plugin.region.exception.RegionExistingException;
 import com.ecconia.rsisland.plugin.selection.api.ISelection;
@@ -57,6 +58,10 @@ public class CommandCreate extends Subcommand
 		catch(RegionExistingException e)
 		{
 			die("Region %v exists already.", args[0]);
+		}
+		catch (DatabaseException e)
+		{
+			die("Error while saving region to Database, operation aborted, please immediately inform someone in charge.");
 		}
 		
 		f.n(sender, "Region %v has been created.", args[0]);

@@ -1,6 +1,9 @@
 package com.ecconia.rsisland.plugin.region;
 
+import java.sql.SQLException;
+
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,7 +15,10 @@ import com.ecconia.rsisland.plugin.region.commands.CommandAppend;
 import com.ecconia.rsisland.plugin.region.commands.CommandCreate;
 import com.ecconia.rsisland.plugin.region.commands.CommandDelete;
 import com.ecconia.rsisland.plugin.region.commands.CommandRemove;
+import com.ecconia.rsisland.plugin.region.db.DBAdapter;
 import com.ecconia.rsisland.plugin.region.elements.Region;
+import com.ecconia.rsisland.plugin.region.elements.Room;
+import com.ecconia.rsisland.plugin.region.exception.DatabaseException;
 import com.ecconia.rsisland.plugin.region.exception.NoSelectionPluginException;
 import com.ecconia.rsisland.plugin.region.exception.RegionExistingException;
 import com.ecconia.rsisland.plugin.region.regionstorage.RegionStorage;
@@ -20,14 +26,32 @@ import com.ecconia.rsisland.plugin.selection.api.SelectionAPI;
 
 public class RegionPlugin extends JavaPlugin
 {
-	public static final String prefix = ChatColor.WHITE + "[" + ChatColor.GOLD + "Region" + ChatColor.WHITE + "] ";
+	private DBAdapter dba;
 	private SelectionAPI selectAPI;
-	
 	private RegionStorage storage;
+	private FormattedLogger logger;
 	
 	@Override
 	public void onEnable()
 	{
+		Feedback f = new Feedback(Feedback.simplePrefix(ChatColor.WHITE, ChatColor.GOLD, "Region"));
+		logger = new FormattedLogger(f, getServer().getConsoleSender());
+		
+		try
+		{
+			String jdbcString = "jdbc:mysql://localhost/{Database}?user={username}&password={password}&useSSL=false";
+			jdbcString = jdbcString.replace("{Database}", "");
+			jdbcString = jdbcString.replace("{username}", "");
+			jdbcString = jdbcString.replace("{password}", "");
+			dba = new DBAdapter(jdbcString, logger, "region");
+		}
+		catch (SQLException e)
+		{
+			logger.error("Could not connect to database, aborting plugin load.");
+			e.printStackTrace();
+			return;
+		}
+		
 		{
 			RegisteredServiceProvider<SelectionAPI> provider = getServer().getServicesManager().getRegistration(SelectionAPI.class);
 			if(provider != null)
@@ -41,9 +65,9 @@ public class RegionPlugin extends JavaPlugin
 		initCommand();
 	}
 	
-	private void initCommand()
+	private void initCommand(Feedback f)
 	{
-		new CommandHandler(this, new Feedback(prefix), new GroupSubcommand("reg"
+		new CommandHandler(this, f, new GroupSubcommand("reg"
 			,new CommandCreate(this)
 			,new CommandDelete(this)
 			,new CommandAppend(this)
@@ -67,7 +91,15 @@ public class RegionPlugin extends JavaPlugin
 			throw new RegionExistingException();
 		}
 		
-		Region region = new Region(name, area);
-		storage.add(region);
+		Region region = new Region(name, area.getWorld(), new Room(area));
+		
+		if(dba.updateRegion(region))
+		{
+			storage.add(region);
+		}
+		else
+		{
+			throw new DatabaseException();
+		}
 	}
 }
