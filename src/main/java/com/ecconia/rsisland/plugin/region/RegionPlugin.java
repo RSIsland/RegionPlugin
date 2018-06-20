@@ -14,6 +14,7 @@ import com.ecconia.rsisland.framework.commonelements.Area;
 import com.ecconia.rsisland.plugin.region.commands.CommandAppend;
 import com.ecconia.rsisland.plugin.region.commands.CommandCreate;
 import com.ecconia.rsisland.plugin.region.commands.CommandDelete;
+import com.ecconia.rsisland.plugin.region.commands.CommandList;
 import com.ecconia.rsisland.plugin.region.commands.CommandRemove;
 import com.ecconia.rsisland.plugin.region.db.DBAdapter;
 import com.ecconia.rsisland.plugin.region.elements.Region;
@@ -62,7 +63,13 @@ public class RegionPlugin extends JavaPlugin
 		
 		storage = new RegionStorage();
 		
-		initCommand();
+		//Load regions.
+		for(World world : getServer().getWorlds())
+		{
+			storage.addWorldRegions(dba.getAllRegionsInWorld(world));
+		}
+		
+		initCommand(f);
 	}
 	
 	private void initCommand(Feedback f)
@@ -72,6 +79,7 @@ public class RegionPlugin extends JavaPlugin
 			,new CommandDelete(this)
 			,new CommandAppend(this)
 			,new CommandRemove(this)
+			,new CommandList(this)
 		));
 	}
 
@@ -101,5 +109,10 @@ public class RegionPlugin extends JavaPlugin
 		{
 			throw new DatabaseException();
 		}
+	}
+	
+	public RegionStorage getStorage()
+	{
+		return storage;
 	}
 }

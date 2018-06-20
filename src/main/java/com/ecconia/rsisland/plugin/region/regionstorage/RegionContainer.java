@@ -1,5 +1,6 @@
 package com.ecconia.rsisland.plugin.region.regionstorage;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.ecconia.rsisland.framework.commonelements.Area;
@@ -17,4 +18,8 @@ public interface RegionContainer
 	public List<Region> getRegions(Area area);
 	
 	public Region getRegion(String name);
+
+	public void add(List<Region> regions);
+
+	public Collection<Region> getAllRegions();
 }

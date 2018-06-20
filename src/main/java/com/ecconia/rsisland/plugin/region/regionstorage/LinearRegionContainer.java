@@ -1,6 +1,7 @@
 package com.ecconia.rsisland.plugin.region.regionstorage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -58,5 +59,20 @@ public class LinearRegionContainer implements RegionContainer
 	public Region getRegion(String name)
 	{
 		return regions.get(name);
+	}
+
+	@Override
+	public void add(List<Region> regions)
+	{
+		for(Region r : regions)
+		{
+			this.regions.put(r.getName(), r);
+		}
+	}
+
+	@Override
+	public Collection<Region> getAllRegions()
+	{
+		return regions.values();
 	}
 }
