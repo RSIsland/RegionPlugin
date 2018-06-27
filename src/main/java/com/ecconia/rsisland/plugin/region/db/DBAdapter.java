@@ -121,6 +121,8 @@ public class DBAdapter extends GenericDBAdapter
 	{
 		try
 		{
+			valid();
+			
 			Integer worldID = h.getWorldID(world.getName());
 			if(worldID == null)
 			{
@@ -185,6 +187,8 @@ public class DBAdapter extends GenericDBAdapter
 		{ //Insert Region
 			try
 			{
+				valid();
+				
 				int worldID = h.getOrSetWorldID(region.getWorld().getName());
 				String name = region.getName();
 				List<Room> rooms = region.getRooms();
@@ -223,5 +227,37 @@ public class DBAdapter extends GenericDBAdapter
 			
 		}
 		return true;
+	}
+
+	public boolean deleteRegion(Region region)
+	{
+		try
+		{
+			valid();
+			
+			if(region.getDBId() == null)
+			{
+				logger.error("Attempted to delete region %v in %v which has not been inserted into the DB yet (no ID).", region.getName(), region.getWorld());
+				//Maybe query by raw data?
+				return true;
+			}
+			
+			Integer worldID = h.getWorldID(region.getWorld().getName());
+			if(worldID == null)
+			{
+				logger.error("Attempted to delete region %v which cannot exist in the DB since world %v is not present.", region.getName(), region.getWorld());
+				return true;
+			}
+			
+			String delete_region = "DELETE FROM " + prefix + "_regions WHERE id = " + region.getDBId() + ";";
+			h.sendQuery(delete_region);
+			return true;
+		}
+		catch (SQLException e)
+		{
+			logger.error("SQL error while deleting region %v in %v.", region.getName(), region.getWorld().getName());
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

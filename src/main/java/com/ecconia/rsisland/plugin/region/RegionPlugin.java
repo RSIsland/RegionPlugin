@@ -22,6 +22,7 @@ import com.ecconia.rsisland.plugin.region.elements.Room;
 import com.ecconia.rsisland.plugin.region.exception.DatabaseException;
 import com.ecconia.rsisland.plugin.region.exception.NoSelectionPluginException;
 import com.ecconia.rsisland.plugin.region.exception.RegionExistingException;
+import com.ecconia.rsisland.plugin.region.exception.RegionNotExistingException;
 import com.ecconia.rsisland.plugin.region.regionstorage.RegionStorage;
 import com.ecconia.rsisland.plugin.selection.api.SelectionAPI;
 
@@ -114,5 +115,24 @@ public class RegionPlugin extends JavaPlugin
 	public RegionStorage getStorage()
 	{
 		return storage;
+	}
+
+	public void deleteRegion(World world, String name)
+	{
+		Region region = storage.getWorldContainer(world).getRegion(name);
+		
+		if(region == null)
+		{
+			throw new RegionNotExistingException();
+		}
+		
+		if(dba.deleteRegion(region))
+		{
+			storage.getWorldContainer(world).remove(region);
+		}
+		else
+		{
+			throw new DatabaseException();
+		}
 	}
 }
