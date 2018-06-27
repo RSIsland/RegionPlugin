@@ -6,18 +6,15 @@ import java.util.Map;
 
 import org.bukkit.World;
 
-import com.ecconia.rsisland.plugin.region.RegionPlugin;
 import com.ecconia.rsisland.plugin.region.elements.Region;
 
 public class RegionStorage
 {
-	private Map<String, Region> regionsByName;
 	private Map<World, RegionContainer> containers;
 	
 	public RegionStorage()
 	{
 		containers = new HashMap<>();
-		regionsByName = new HashMap<>();
 	}
 	
 	public void addWorldRegions(List<Region> regions)
@@ -52,14 +49,13 @@ public class RegionStorage
 		return container;
 	}
 
-	public boolean hasRegion(String name)
+	public boolean hasRegion(World world, String name)
 	{
-		return regionsByName.containsKey(name);
+		return getWorldContainer(world).getRegion(name) != null;
 	}
 
 	public void add(Region region)
 	{
-		regionsByName.put(region.getName(), region);
 		getWorldContainer(region.getWorld()).add(region);
 	}
 	

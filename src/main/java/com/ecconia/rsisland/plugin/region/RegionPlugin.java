@@ -94,7 +94,7 @@ public class RegionPlugin extends JavaPlugin
 
 	public void createRegion(Area area, String name)
 	{
-		if(storage.hasRegion(name))
+		if(storage.hasRegion(area.getWorld(), name))
 		{
 			throw new RegionExistingException();
 		}
