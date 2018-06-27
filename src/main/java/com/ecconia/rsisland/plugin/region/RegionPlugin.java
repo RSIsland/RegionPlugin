@@ -12,6 +12,7 @@ import com.ecconia.rsisland.framework.cofami.Feedback;
 import com.ecconia.rsisland.framework.cofami.GroupSubcommand;
 import com.ecconia.rsisland.framework.commonelements.Area;
 import com.ecconia.rsisland.plugin.region.commands.CommandAppend;
+import com.ecconia.rsisland.plugin.region.commands.CommandCUIShow;
 import com.ecconia.rsisland.plugin.region.commands.CommandCreate;
 import com.ecconia.rsisland.plugin.region.commands.CommandDelete;
 import com.ecconia.rsisland.plugin.region.commands.CommandList;
@@ -81,6 +82,7 @@ public class RegionPlugin extends JavaPlugin
 			,new CommandAppend(this)
 			,new CommandRemove(this)
 			,new CommandList(this)
+			,new CommandCUIShow(this)
 		));
 	}
 
