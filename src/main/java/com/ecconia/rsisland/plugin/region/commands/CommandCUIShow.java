@@ -1,6 +1,7 @@
 package com.ecconia.rsisland.plugin.region.commands;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -8,13 +9,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.ecconia.rsisland.framework.cofami.Subcommand;
+import com.ecconia.rsisland.framework.commonelements.Cuboid;
 import com.ecconia.rsisland.plugin.region.RegionPlugin;
 import com.ecconia.rsisland.plugin.region.elements.Region;
 import com.ecconia.rsisland.plugin.region.elements.Room;
 import com.ecconia.rsisland.plugin.region.exception.NoSelectionPluginException;
-import com.ecconia.rsisland.plugin.selection.api.CUIArea;
 import com.ecconia.rsisland.plugin.selection.api.ISelPlayer;
 import com.ecconia.rsisland.plugin.selection.api.SelectionAPI;
+import com.ecconia.rsisland.plugin.selection.api.cui.CUIColor;
+import com.ecconia.rsisland.plugin.selection.api.cui.CUICuboidConstruct;
 
 public class CommandCUIShow extends Subcommand
 {
@@ -51,31 +54,40 @@ public class CommandCUIShow extends Subcommand
 			die("You can only use this command with the clientmod WECUI for LiteLoader.");
 		}
 		
-		List<CUIArea> cuiRegions = new ArrayList<>();
-		
-		Random r = new Random();
-		
-		for(Region region : plugin.getStorage().getWorldContainer(player.getWorld()).getAllRegions())
+		if(selPlayer.hasCuboidConstructs(plugin))
 		{
-			List<CUIArea.Room> rooms = new ArrayList<>();
+			selPlayer.setCUIAreas(plugin, Collections.emptyList());
 			
-			for(Room room : region.getRooms())
+			f.n(sender, "Removed all regions from cui.");
+		}
+		else
+		{
+			List<CUICuboidConstruct> cuiRegions = new ArrayList<>();
+			
+			Random r = new Random();
+			
+			for(Region region : plugin.getStorage().getWorldContainer(player.getWorld()).getAllRegions())
 			{
-				rooms.add(new CUIArea.Room(room.getMin(), room.getMax()));
+				List<Cuboid> cuboids = new ArrayList<>();
+				
+				for(Room room : region.getRooms())
+				{
+					cuboids.add(new Cuboid(room.getMin(), room.getMax()));
+				}
+				
+				StringBuilder sb = new StringBuilder("#");
+				sb.append(Integer.toString(r.nextInt(255*255*255), 16));
+				sb.append("ff");
+				
+				CUICuboidConstruct area = new CUICuboidConstruct(cuboids);
+				area.setColor(CUIColor.validateColor("#ffffffff", sb.toString(), "#00000000", "#00000000"));
+				
+				cuiRegions.add(area);
 			}
 			
-			StringBuilder sb = new StringBuilder("#");
-			sb.append(Integer.toString(r.nextInt(255*255*255), 16));
-			sb.append("ff");
+			selPlayer.setCUIAreas(plugin, cuiRegions);
 			
-			CUIArea area = new CUIArea(rooms);
-			area.setColor(CUIArea.Color.validateColor("#ffffffff", sb.toString(), "#00000000", "#00000000"));
-			
-			cuiRegions.add(area);
+			f.n(sender, "Sent %v regions of world %v to cui.", cuiRegions.size(), player.getWorld().getName());
 		}
-		
-		selPlayer.setCUIAreas(cuiRegions);
-		
-		f.n(sender, "Sent %v regions of world %v to cui.", cuiRegions.size(), player.getWorld().getName());
 	}
 }

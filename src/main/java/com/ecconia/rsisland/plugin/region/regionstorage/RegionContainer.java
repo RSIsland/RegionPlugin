@@ -3,7 +3,9 @@ package com.ecconia.rsisland.plugin.region.regionstorage;
 import java.util.Collection;
 import java.util.List;
 
-import com.ecconia.rsisland.framework.commonelements.Area;
+import org.bukkit.World;
+
+import com.ecconia.rsisland.framework.commonelements.Cuboid;
 import com.ecconia.rsisland.framework.commonelements.Point;
 import com.ecconia.rsisland.plugin.region.elements.Region;
 
@@ -15,7 +17,7 @@ public interface RegionContainer
 	
 	public List<Region> getRegions(Point location);
 	
-	public List<Region> getRegions(Area area);
+	public List<Region> getRegions(World world, Cuboid area);
 	
 	public Region getRegion(String name);
 

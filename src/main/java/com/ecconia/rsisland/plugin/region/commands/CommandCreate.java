@@ -46,14 +46,15 @@ public class CommandCreate extends Subcommand
 		{
 			die("You do not have a selection %v nor a last used selection.", "plugin:region");
 		}
-		if(selection.isIncomplete())
-		{
-			die("Your selection is not complete, it cannot be used");
-		}
 		
 		try
 		{
-			plugin.createRegion(selection.getArea(), args[0]);
+			if(selection.getWorld() == null)
+			{
+				die("Your selection %v is not set, it cannot be used.", selection.getName());
+			}
+			
+			plugin.createRegion(selection.getWorld(), selection.getCuboid(), args[0]);
 		}
 		catch(RegionExistingException e)
 		{

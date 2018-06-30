@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.ecconia.rsisland.framework.cofami.CommandHandler;
 import com.ecconia.rsisland.framework.cofami.Feedback;
 import com.ecconia.rsisland.framework.cofami.GroupSubcommand;
-import com.ecconia.rsisland.framework.commonelements.Area;
+import com.ecconia.rsisland.framework.commonelements.Cuboid;
 import com.ecconia.rsisland.plugin.region.commands.CommandAppend;
 import com.ecconia.rsisland.plugin.region.commands.CommandCUIShow;
 import com.ecconia.rsisland.plugin.region.commands.CommandCreate;
@@ -95,14 +95,14 @@ public class RegionPlugin extends JavaPlugin
 		return selectAPI;
 	}
 
-	public void createRegion(Area area, String name)
+	public void createRegion(World world, Cuboid cuboid, String name)
 	{
-		if(storage.hasRegion(area.getWorld(), name))
+		if(storage.hasRegion(world, name))
 		{
 			throw new RegionExistingException();
 		}
 		
-		Region region = new Region(name, area.getWorld(), new Room(area));
+		Region region = new Region(name, world, new Room(cuboid));
 		
 		if(dba.updateRegion(region))
 		{

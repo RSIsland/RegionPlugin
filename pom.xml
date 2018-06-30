@@ -3,19 +3,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ecconia.rsisland.plugin.region</groupId>
 	<artifactId>RegionPlugin</artifactId>
-	<version>1</version>
-	
+	<version>1.1</version>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<repositories>
 		<repository>
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 	</repositories>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>com.ecconia.rsisland.plugin.selection</groupId>
 			<artifactId>SelectionPlugin-API</artifactId>
-			<version>1.1</version>
+			<version>1.2</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -39,11 +39,11 @@
 		<dependency>
 			<groupId>com.ecconia.rsisland.framework.commonelements</groupId>
 			<artifactId>CommonElements</artifactId>
-			<version>1</version>
-			<scope>provided</scope><!-- Comes with the selection API, should be wrapped before usage. -->
+			<version>2</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<resources>
 			<resource>
@@ -51,7 +51,7 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -62,7 +62,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>

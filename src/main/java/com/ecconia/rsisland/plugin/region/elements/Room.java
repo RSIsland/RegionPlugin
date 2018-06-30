@@ -1,6 +1,6 @@
 package com.ecconia.rsisland.plugin.region.elements;
 
-import com.ecconia.rsisland.framework.commonelements.Area;
+import com.ecconia.rsisland.framework.commonelements.Cuboid;
 import com.ecconia.rsisland.framework.commonelements.Point;
 
 public class Room
@@ -18,10 +18,10 @@ public class Room
 		max = new Point(max_x, max_y, max_z);
 	}
 	
-	public Room(Area area)
+	public Room(Cuboid cuboid)
 	{
-		min = area.getMin();
-		max = area.getMax();
+		min = cuboid.getFirstPoint();
+		max = cuboid.getSecondPoint();
 	}
 
 	public Point getMin()
